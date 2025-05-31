@@ -16,7 +16,7 @@ export class UserService {
       login: createUserDto.login,
       password: createUserDto.password,
       id: randomUUID(),
-      version: 0,
+      version: 1,
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime(),
     };
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   findOne(id: string) {
-    const foundUser = db.Users.find((user) => user.id === id);
+    const foundUser = db.Users.find((user) => user?.id === id);
 
     if (!foundUser)
       throw new NotFoundException(`User with ID ${id} is not found`);
@@ -41,7 +41,7 @@ export class UserService {
 
   update(id: string, updateUserDto: UpdatePasswordDto) {
     const updatedUserIndex = db.Users.findIndex(
-      (user: UserEntity) => user.id === id,
+      (user: UserEntity) => user?.id === id,
     );
 
     if (updatedUserIndex === -1)
