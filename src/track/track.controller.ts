@@ -29,7 +29,7 @@ export class TrackController {
 
   @Get(':id')
   findById(@Param('id', UUIDValidationPipe) id: string) {
-    return this.trackService.findOne(id);
+    return this.trackService.findById(id);
   }
 
   @Put(':id')

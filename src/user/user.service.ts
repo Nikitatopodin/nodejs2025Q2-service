@@ -67,11 +67,11 @@ export class UserService {
   }
 
   remove(id: string) {
-    const updatedUserIndex = db.Users.findIndex((user) => user?.id === id);
+    const removedUserIndex = db.Users.findIndex((user) => user?.id === id);
 
-    if (updatedUserIndex === -1)
+    if (removedUserIndex === -1)
       throw new NotFoundException(`User with ID ${id} is not found`);
 
-    db.Users.splice(1, updatedUserIndex);
+    db.Users.splice(1, removedUserIndex);
   }
 }

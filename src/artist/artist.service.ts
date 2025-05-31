@@ -25,7 +25,7 @@ export class ArtistService {
     return db.Artists;
   }
 
-  findOne(id: string) {
+  findById(id: string) {
     const foundArtist = db.Artists.find((artist) => artist?.id === id);
 
     if (!foundArtist)

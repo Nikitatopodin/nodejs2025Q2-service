@@ -25,7 +25,7 @@ export class AlbumService {
     return db.Albums;
   }
 
-  findOne(id: string) {
+  findById(id: string) {
     const foundAlbum = db.Albums.find((album) => album?.id === id);
 
     if (!foundAlbum)

@@ -28,8 +28,8 @@ export class ArtistController {
   }
 
   @Get(':id')
-  findOne(@Param('id', UUIDValidationPipe) id: string) {
-    return this.artistService.findOne(id);
+  findById(@Param('id', UUIDValidationPipe) id: string) {
+    return this.artistService.findById(id);
   }
 
   @Put(':id')
