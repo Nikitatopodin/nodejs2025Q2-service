@@ -66,9 +66,9 @@ export class TrackService {
       throw new NotFoundException(`Track with ID ${id} is not found`);
 
     if (removedTrackIndexInFavs !== -1) {
-      db.Favorites.tracks.splice(1, removedTrackIndexInFavs);
+      db.Favorites.tracks.splice(removedTrackIndexInFavs, 1);
     }
 
-    db.Tracks.splice(1, removedTrackIndex);
+    db.Tracks.splice(removedTrackIndex, 1);
   }
 }

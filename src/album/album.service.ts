@@ -76,8 +76,8 @@ export class AlbumService {
     );
 
     if (removedAlbumIndexInFavs !== -1) {
-      db.Favorites.albums.splice(1, removedAlbumIndexInFavs);
+      db.Favorites.albums.splice(removedAlbumIndexInFavs, 1);
     }
-    db.Albums.splice(1, removedAlbumIndex);
+    db.Albums.splice(removedAlbumIndex, 1);
   }
 }

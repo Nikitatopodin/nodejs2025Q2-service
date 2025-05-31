@@ -39,6 +39,6 @@ export class FavoritesService {
     const foundEntityIndex = db.Favorites[`${entity}s`].findIndex(
       (e) => e?.id === id,
     );
-    db.Favorites[`${entity}s`].splice(1, foundEntityIndex);
+    db.Favorites[`${entity}s`].splice(foundEntityIndex, 1);
   }
 }

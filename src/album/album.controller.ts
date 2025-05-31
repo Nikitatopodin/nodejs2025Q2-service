@@ -28,8 +28,8 @@ export class AlbumController {
   }
 
   @Get(':id')
-  findOne(@Param('id', UUIDValidationPipe) id: string) {
-    return this.albumService.findOne(id);
+  findById(@Param('id', UUIDValidationPipe) id: string) {
+    return this.albumService.findById(id);
   }
 
   @Put(':id')

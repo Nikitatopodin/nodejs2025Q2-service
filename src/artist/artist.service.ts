@@ -87,9 +87,9 @@ export class ArtistService {
     );
 
     if (removedArtistIndexInFavs !== -1) {
-      db.Favorites.artists.splice(1, removedArtistIndexInFavs);
+      db.Favorites.artists.splice(removedArtistIndexInFavs, 1);
     }
 
-    db.Artists.splice(1, removedArtistIndex);
+    db.Artists.splice(removedArtistIndex, 1);
   }
 }
