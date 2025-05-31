@@ -58,10 +58,17 @@ export class TrackService {
 
   remove(id: string) {
     const updatedTrackIndex = db.Tracks.findIndex((track) => track?.id === id);
+    const removedTrackIndexInFavs = db.Favorites.tracks.findIndex(
+      (track) => track?.id === id,
+    );
 
     if (updatedTrackIndex === -1)
       throw new NotFoundException(`Track with ID ${id} is not found`);
 
-    delete db.Tracks[updatedTrackIndex];
+    if (removedTrackIndexInFavs !== -1) {
+      db.Favorites.tracks.splice(1, removedTrackIndexInFavs);
+    }
+
+    db.Tracks.splice(1, updatedTrackIndex);
   }
 }

@@ -72,6 +72,6 @@ export class UserService {
     if (updatedUserIndex === -1)
       throw new NotFoundException(`User with ID ${id} is not found`);
 
-    delete db.Users[updatedUserIndex];
+    db.Users.splice(1, updatedUserIndex);
   }
 }

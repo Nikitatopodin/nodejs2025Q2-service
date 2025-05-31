@@ -70,6 +70,14 @@ export class AlbumService {
         track.albumId = null;
       });
     }
-    delete db.Albums[removedAlbumIndex];
+
+    const removedAlbumIndexInFavs = db.Favorites.albums.findIndex(
+      (album) => album?.id === id,
+    );
+
+    if (removedAlbumIndexInFavs !== -1) {
+      db.Favorites.albums.splice(1, removedAlbumIndexInFavs);
+    }
+    db.Albums.splice(1, removedAlbumIndex);
   }
 }

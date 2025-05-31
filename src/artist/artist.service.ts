@@ -82,6 +82,14 @@ export class ArtistService {
       });
     }
 
-    delete db.Artists[removedArtistIndex];
+    const removedArtistIndexInFavs = db.Favorites.artists.findIndex(
+      (artist) => artist?.id === id,
+    );
+
+    if (removedArtistIndexInFavs !== -1) {
+      db.Favorites.artists.splice(1, removedArtistIndexInFavs);
+    }
+
+    db.Artists.splice(1, removedArtistIndex);
   }
 }
