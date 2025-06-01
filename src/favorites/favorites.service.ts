@@ -1,5 +1,8 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { AlbumEntity } from 'src/album/entities/album.entity';
+import { ArtistEntity } from 'src/artist/entities/artist.entity';
 import { db } from 'src/db';
+import { TrackEntity } from 'src/track/entities/track.entity';
 
 const dataBaseEntityNameMap = {
   artist: 'Artists',
@@ -12,7 +15,9 @@ export class FavoritesService {
   create(id: string, entity: string) {
     const dataBaseEntityName = dataBaseEntityNameMap[entity];
 
-    const foundEntity = db[dataBaseEntityName].find((e) => e?.id === id);
+    const foundEntity = db[dataBaseEntityName].find(
+      (e: TrackEntity | AlbumEntity | ArtistEntity) => e?.id === id,
+    );
     const foundEntityCopy = { ...foundEntity };
 
     if (!foundEntity)
@@ -37,7 +42,7 @@ export class FavoritesService {
       );
 
     const foundEntityIndex = db.Favorites[`${entity}s`].findIndex(
-      (e) => e?.id === id,
+      (e: TrackEntity | AlbumEntity | ArtistEntity) => e?.id === id,
     );
     db.Favorites[`${entity}s`].splice(foundEntityIndex, 1);
   }

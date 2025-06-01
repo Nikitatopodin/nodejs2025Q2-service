@@ -1,15 +1,25 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateTrackDto {
-  id: string;
   @IsString()
+  @ApiProperty({ example: 'The line', description: 'Track name' })
   name: string;
   @IsString()
   @IsOptional()
+  @ApiPropertyOptional({
+    example: '61f0c404-5cb3-11e7-907b-a6006ad3dba0',
+    description: 'Id of the artist to which the track belongs',
+  })
   artistId: string | null;
   @IsString()
   @IsOptional()
+  @ApiPropertyOptional({
+    example: '61f0c404-5cb3-11e7-907b-a6006ad3dba0',
+    description: 'Id of the album to which the track belongs',
+  })
   albumId: string | null;
   @IsInt()
+  @ApiProperty({ example: '192', description: 'Track duration' })
   duration: number;
 }

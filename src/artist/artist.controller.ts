@@ -12,27 +12,36 @@ import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create an artist' })
+  @ApiResponse({ status: 201, description: 'Artist created' })
   create(@Body() createArtistDto: CreateArtistDto) {
     return this.artistService.create(createArtistDto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all artists' })
+  @ApiResponse({ status: 200, description: 'List of artists' })
   findAll() {
     return this.artistService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get artist by id' })
+  @ApiResponse({ status: 200, description: 'Artist' })
   findById(@Param('id', UUIDValidationPipe) id: string) {
     return this.artistService.findById(id);
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update artist by id' })
+  @ApiResponse({ status: 200, description: 'Artist updated' })
   update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
@@ -41,6 +50,8 @@ export class ArtistController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete artist by id' })
+  @ApiResponse({ status: 204, description: 'Artist deleted' })
   @HttpCode(204)
   remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.artistService.remove(id);
