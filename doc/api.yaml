@@ -23,9 +23,11 @@ paths:
       responses:
         '201':
           description: User created
+        '400':
+          description: Missing required fields
       summary: Create a user
       tags: &ref_0
-        - user
+        - User
     get:
       operationId: UserController_findAll
       parameters: []
@@ -46,6 +48,10 @@ paths:
       responses:
         '200':
           description: User
+        '400':
+          description: Invalid id
+        '404':
+          description: User not found
       summary: Get user by id
       tags: *ref_0
     put:
@@ -65,6 +71,12 @@ paths:
       responses:
         '200':
           description: User updated
+        '400':
+          description: Invalid id
+        '403':
+          description: Previous password doesn't match
+        '404':
+          description: User not found
       summary: Update user by id
       tags: *ref_0
     delete:
@@ -78,6 +90,10 @@ paths:
       responses:
         '200':
           description: User deleted
+        '400':
+          description: Invalid id
+        '404':
+          description: User not found
       summary: Delete user by id
       tags: *ref_0
   /artist:
@@ -93,6 +109,8 @@ paths:
       responses:
         '201':
           description: Artist created
+        '400':
+          description: Missing required fields
       summary: Create an artist
       tags: &ref_1
         - Artist
@@ -116,6 +134,10 @@ paths:
       responses:
         '200':
           description: Artist
+        '400':
+          description: Invalid id
+        '404':
+          description: Artist not found
       summary: Get artist by id
       tags: *ref_1
     put:
@@ -135,6 +157,10 @@ paths:
       responses:
         '200':
           description: Artist updated
+        '400':
+          description: Invalid id
+        '404':
+          description: Artist not found
       summary: Update artist by id
       tags: *ref_1
     delete:
@@ -148,6 +174,10 @@ paths:
       responses:
         '204':
           description: Artist deleted
+        '400':
+          description: Invalid id
+        '404':
+          description: Artist not found
       summary: Delete artist by id
       tags: *ref_1
   /track:
@@ -163,6 +193,8 @@ paths:
       responses:
         '201':
           description: Track created
+        '400':
+          description: Missing required fields
       summary: Create a track
       tags: &ref_2
         - Track
@@ -186,6 +218,10 @@ paths:
       responses:
         '200':
           description: Track
+        '400':
+          description: Invalid id
+        '404':
+          description: Track not found
       summary: Get track by id
       tags: *ref_2
     put:
@@ -205,6 +241,10 @@ paths:
       responses:
         '200':
           description: Track updated
+        '400':
+          description: Invalid id
+        '404':
+          description: Track not found
       summary: Update track by id
       tags: *ref_2
     delete:
@@ -218,6 +258,10 @@ paths:
       responses:
         '204':
           description: Track deleted
+        '400':
+          description: Invalid id
+        '404':
+          description: Track not found
       summary: Delete track by id
       tags: *ref_2
   /album:
@@ -233,6 +277,8 @@ paths:
       responses:
         '201':
           description: Album created
+        '400':
+          description: Missing required fields
       summary: Create an album
       tags: &ref_3
         - Album
@@ -256,6 +302,10 @@ paths:
       responses:
         '200':
           description: Album
+        '400':
+          description: Invalid id
+        '404':
+          description: Album not found
       summary: Get album by id
       tags: *ref_3
     put:
@@ -275,6 +325,10 @@ paths:
       responses:
         '200':
           description: Album updated
+        '400':
+          description: Invalid id
+        '404':
+          description: Album not found
       summary: Update album by id
       tags: *ref_3
     delete:
@@ -288,6 +342,10 @@ paths:
       responses:
         '204':
           description: Album deleted
+        '400':
+          description: Invalid id
+        '404':
+          description: Album not found
       summary: Delete album by id
       tags: *ref_3
   /favs/{entity}/{id}:
@@ -454,7 +512,7 @@ components:
           example: Led Zeppelin III
           description: Album name
         year:
-          type: number
+          type: string
           example: '1970'
           description: Album release date
         artistId:
@@ -472,7 +530,7 @@ components:
           example: Led Zeppelin III
           description: Album name
         year:
-          type: number
+          type: string
           example: '1970'
           description: Album release date
         artistId:

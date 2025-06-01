@@ -12,7 +12,12 @@ import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('artist')
 export class ArtistController {
@@ -21,6 +26,7 @@ export class ArtistController {
   @Post()
   @ApiOperation({ summary: 'Create an artist' })
   @ApiResponse({ status: 201, description: 'Artist created' })
+  @ApiBadRequestResponse({ description: 'Missing required fields' })
   create(@Body() createArtistDto: CreateArtistDto) {
     return this.artistService.create(createArtistDto);
   }
@@ -35,6 +41,8 @@ export class ArtistController {
   @Get(':id')
   @ApiOperation({ summary: 'Get artist by id' })
   @ApiResponse({ status: 200, description: 'Artist' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'Artist not found' })
   findById(@Param('id', UUIDValidationPipe) id: string) {
     return this.artistService.findById(id);
   }
@@ -42,6 +50,8 @@ export class ArtistController {
   @Put(':id')
   @ApiOperation({ summary: 'Update artist by id' })
   @ApiResponse({ status: 200, description: 'Artist updated' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'Artist not found' })
   update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() updateArtistDto: UpdateArtistDto,
@@ -52,6 +62,8 @@ export class ArtistController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete artist by id' })
   @ApiResponse({ status: 204, description: 'Artist deleted' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'Artist not found' })
   @HttpCode(204)
   remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.artistService.remove(id);

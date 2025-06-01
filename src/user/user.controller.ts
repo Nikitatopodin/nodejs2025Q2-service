@@ -14,9 +14,14 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UserEntity } from './entities/user.entity';
 import { plainToInstance } from 'class-transformer';
 import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
-@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -24,6 +29,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Create a user' })
   @ApiResponse({ status: 201, description: 'User created' })
+  @ApiBadRequestResponse({ description: 'Missing required fields' })
   create(@Body() createUserDto: CreateUserDto) {
     const user = this.userService.create(createUserDto);
 
@@ -46,6 +52,8 @@ export class UserController {
   @Get(':id')
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({ status: 200, description: 'User' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   findById(@Param('id', UUIDValidationPipe) id: string) {
     const foundUser = this.userService.findOne(id);
 
@@ -57,6 +65,9 @@ export class UserController {
   @Put(':id')
   @ApiOperation({ summary: 'Update user by id' })
   @ApiResponse({ status: 200, description: 'User updated' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiForbiddenResponse({ description: "Previous password doesn't match" })
   update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
@@ -71,6 +82,8 @@ export class UserController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete user by id' })
   @ApiResponse({ status: 200, description: 'User deleted' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @HttpCode(204)
   remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.userService.remove(id);

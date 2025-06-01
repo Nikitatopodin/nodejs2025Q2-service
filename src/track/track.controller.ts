@@ -12,7 +12,12 @@ import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('track')
 export class TrackController {
@@ -21,6 +26,7 @@ export class TrackController {
   @Post()
   @ApiOperation({ summary: 'Create a track' })
   @ApiResponse({ status: 201, description: 'Track created' })
+  @ApiBadRequestResponse({ description: 'Missing required fields' })
   create(@Body() createTrackDto: CreateTrackDto) {
     return this.trackService.create(createTrackDto);
   }
@@ -35,6 +41,8 @@ export class TrackController {
   @Get(':id')
   @ApiOperation({ summary: 'Get track by id' })
   @ApiResponse({ status: 200, description: 'Track' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'Track not found' })
   findById(@Param('id', UUIDValidationPipe) id: string) {
     return this.trackService.findById(id);
   }
@@ -42,6 +50,8 @@ export class TrackController {
   @Put(':id')
   @ApiOperation({ summary: 'Update track by id' })
   @ApiResponse({ status: 200, description: 'Track updated' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'Track not found' })
   update(
     @Param('id', UUIDValidationPipe) id: string,
     @Body() updateTrackDto: UpdateTrackDto,
@@ -52,6 +62,8 @@ export class TrackController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete track by id' })
   @ApiResponse({ status: 204, description: 'Track deleted' })
+  @ApiBadRequestResponse({ description: 'Invalid id' })
+  @ApiNotFoundResponse({ description: 'Track not found' })
   @HttpCode(204)
   remove(@Param('id', UUIDValidationPipe) id: string) {
     return this.trackService.remove(id);
