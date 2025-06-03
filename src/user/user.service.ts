@@ -70,6 +70,6 @@ export class UserService {
   async remove(id: string) {
     const userToRemove = await this.findOne(id);
 
-    await this.userRepository.delete(userToRemove);
+    await this.userRepository.delete(userToRemove.id);
   }
 }
