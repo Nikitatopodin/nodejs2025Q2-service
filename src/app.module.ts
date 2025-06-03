@@ -7,18 +7,26 @@ import { AlbumModule } from './album/album.module';
 import { TrackModule } from './track/track.module';
 import { ArtistModule } from './artist/artist.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'user123',
-      password: 'password123',
-      database: 'home-library-service',
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.getOrThrow('POSTGRES_HOST'),
+        port: configService.getOrThrow('POSTGRES_PORT'),
+        username: configService.getOrThrow('POSTGRES_USER'),
+        password: configService.getOrThrow('POSTGRES_PASSWORD'),
+        database: 'home-library-service',
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     UserModule,
     ArtistModule,
