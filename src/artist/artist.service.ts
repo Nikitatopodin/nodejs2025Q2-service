@@ -16,6 +16,8 @@ export class ArtistService {
     private artistRepository: Repository<ArtistEntity>,
     @InjectRepository(TrackEntity)
     private trackRepository: Repository<TrackEntity>,
+    @InjectRepository(AlbumEntity)
+    private albumRepository: Repository<AlbumEntity>,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {
@@ -65,15 +67,7 @@ export class ArtistService {
 
     await this.trackRepository.update({ artistId: id }, { artistId: null });
 
-    const albumsWithRemovedArtist = db.Albums.filter(
-      (album: AlbumEntity) => album.artistId === id,
-    );
-
-    if (albumsWithRemovedArtist.length > 0) {
-      albumsWithRemovedArtist.forEach((album) => {
-        album.artistId = null;
-      });
-    }
+    await this.albumRepository.update({ artistId: id }, { artistId: null });
 
     const removedArtistIndexInFavs = db.Favorites.artists.findIndex(
       (artist) => artist?.id === id,
