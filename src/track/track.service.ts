@@ -4,7 +4,7 @@ import { UpdateTrackDto } from './dto/update-track.dto';
 import { randomUUID } from 'crypto';
 import { TrackEntity } from './entities/track.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class TrackService {
@@ -42,6 +42,10 @@ export class TrackService {
     return foundTrack;
   }
 
+  async findByIds(ids: string[]) {
+    return this.trackRepository.find({ where: { id: In(ids) } });
+  }
+
   async update(id: string, updateTrackDto: UpdateTrackDto) {
     const trackToUpdate = await this.findById(id);
 
@@ -60,13 +64,6 @@ export class TrackService {
 
   async remove(id: string) {
     const trackToRemove = await this.findById(id);
-    // const removedTrackIndexInFavs = db.Favorites.tracks.findIndex(
-    //   (track) => track?.id === id,
-    // );
-
-    // if (removedTrackIndexInFavs !== -1) {
-    //   db.Favorites.tracks.splice(removedTrackIndexInFavs, 1);
-    // }
 
     await this.trackRepository.delete(trackToRemove.id);
   }

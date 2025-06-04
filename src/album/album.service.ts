@@ -1,12 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { db } from 'src/db';
 import { randomUUID } from 'crypto';
 import { AlbumEntity } from './entities/album.entity';
 import { TrackEntity } from 'src/track/entities/track.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumService {
@@ -43,6 +42,10 @@ export class AlbumService {
     return foundAlbum;
   }
 
+  async findByIds(ids: string[]) {
+    return this.albumRepository.find({ where: { id: In(ids) } });
+  }
+
   async update(id: string, updateAlbumDto: UpdateAlbumDto) {
     const albumToUpdate = await this.findById(id);
 
@@ -62,13 +65,6 @@ export class AlbumService {
 
     await this.trackRepository.update({ albumId: id }, { albumId: null });
 
-    const removedAlbumIndexInFavs = db.Favorites.albums.findIndex(
-      (album) => album?.id === id,
-    );
-
-    if (removedAlbumIndexInFavs !== -1) {
-      db.Favorites.albums.splice(removedAlbumIndexInFavs, 1);
-    }
     await this.albumRepository.delete(albumToRemove?.id);
   }
 }
