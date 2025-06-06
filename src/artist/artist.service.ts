@@ -3,8 +3,6 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { randomUUID } from 'crypto';
 import { ArtistEntity } from './entities/artist.entity';
-import { TrackEntity } from 'src/track/entities/track.entity';
-import { AlbumEntity } from 'src/album/entities/album.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
@@ -13,10 +11,6 @@ export class ArtistService {
   constructor(
     @InjectRepository(ArtistEntity)
     private artistRepository: Repository<ArtistEntity>,
-    @InjectRepository(TrackEntity)
-    private trackRepository: Repository<TrackEntity>,
-    @InjectRepository(AlbumEntity)
-    private albumRepository: Repository<AlbumEntity>,
   ) {}
 
   async create(createArtistDto: CreateArtistDto) {
@@ -67,10 +61,6 @@ export class ArtistService {
 
   async remove(id: string) {
     const artistToRemove = await this.findById(id);
-
-    await this.trackRepository.update({ artistId: id }, { artistId: null });
-
-    await this.albumRepository.update({ artistId: id }, { artistId: null });
 
     await this.artistRepository.delete(artistToRemove.id);
   }

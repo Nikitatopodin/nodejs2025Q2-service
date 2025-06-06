@@ -26,33 +26,25 @@ export class FavoritesService {
 
   async create(id: string, entity: string) {
     const foundEntity = await this.findById(id, entity);
-    const newFavorite = this.FavoriteRepository.create({
-      id: randomUUID(),
-      entity: entity,
-      entityId: foundEntity.id,
-    });
+    const newFavorite = new FavoriteEntity();
+    newFavorite.id = randomUUID();
+
+    newFavorite[entity] = foundEntity;
+    newFavorite[`${entity}Id`] = foundEntity.id;
+
     await this.FavoriteRepository.save(newFavorite);
   }
 
   async findAll() {
-    const favorites = await this.FavoriteRepository.find();
-    const artistIds = favorites.map((f) => {
-      if (f.entity === 'artist') return f.entityId;
-    });
-    const albumIds = favorites.map((f) => {
-      if (f.entity === 'album') return f.entityId;
-    });
-    const trackIds = favorites.map((f) => {
-      if (f.entity === 'track') return f.entityId;
+    const favorites = await this.FavoriteRepository.find({
+      relations: ['track', 'artist', 'album'],
     });
 
-    const [artists, albums, tracks] = await Promise.all([
-      this.artistService.findByIds(artistIds) || [],
-      this.albumService.findByIds(albumIds) || [],
-      this.trackService.findByIds(trackIds) || [],
-    ]);
-
-    return { artists, albums, tracks };
+    return {
+      tracks: favorites.filter((f) => f.track).map((f) => f.track),
+      artists: favorites.filter((f) => f.artist).map((f) => f.artist),
+      albums: favorites.filter((f) => f.album).map((f) => f.album),
+    };
   }
 
   async findById(
@@ -74,13 +66,13 @@ export class FavoritesService {
 
   async remove(entityId: string, entity: string) {
     const foundEntity = await this.FavoriteRepository.findOne({
-      where: { entityId },
+      where: { [`${entity}Id`]: entityId },
     });
 
     if (!foundEntity)
       throw new NotFoundException(
         `Favorite ${entity} with ID ${entityId} is not found`,
       );
-    await this.FavoriteRepository.delete({ entity, entityId });
+    await this.FavoriteRepository.delete({ [`${entity}Id`]: entityId });
   }
 }

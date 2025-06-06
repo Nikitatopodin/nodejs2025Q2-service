@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { IsOptional } from 'class-validator';
+import { ArtistEntity } from 'src/artist/entities/artist.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class AlbumEntity {
@@ -12,4 +15,11 @@ export class AlbumEntity {
     nullable: true,
   })
   artistId: string | null;
+  @ManyToOne(() => ArtistEntity, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'artistId' })
+  @Exclude()
+  @IsOptional()
+  artist: ArtistEntity | null;
 }

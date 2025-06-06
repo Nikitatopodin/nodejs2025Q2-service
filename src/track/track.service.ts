@@ -49,17 +49,15 @@ export class TrackService {
   async update(id: string, updateTrackDto: UpdateTrackDto) {
     const trackToUpdate = await this.findById(id);
 
-    const updatedTrack: TrackEntity = {
+    await this.trackRepository.update(id, {
       name: updateTrackDto.name,
       artistId: updateTrackDto.artistId,
       id: trackToUpdate.id,
       albumId: updateTrackDto.albumId,
       duration: updateTrackDto.duration,
-    };
+    });
 
-    await this.trackRepository.save(updatedTrack);
-
-    return updatedTrack;
+    return trackToUpdate;
   }
 
   async remove(id: string) {
