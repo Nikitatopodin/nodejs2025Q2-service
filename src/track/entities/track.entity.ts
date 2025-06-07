@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { AlbumEntity } from 'src/album/entities/album.entity';
-import { ArtistEntity } from 'src/artist/entities/artist.entity';
+import { AlbumEntity } from '../../album/entities/album.entity';
+import { ArtistEntity } from '../../artist/entities/artist.entity';
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()

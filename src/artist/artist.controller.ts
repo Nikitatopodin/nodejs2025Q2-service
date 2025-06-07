@@ -11,7 +11,7 @@ import {
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
+import { UUIDValidationPipe } from '../common/pipes/uuid-validation.pipe';
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,

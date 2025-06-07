@@ -13,7 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UserEntity } from './entities/user.entity';
 import { plainToInstance } from 'class-transformer';
-import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
+import { UUIDValidationPipe } from '../common/pipes/uuid-validation.pipe';
 import {
   ApiBadRequestResponse,
   ApiForbiddenResponse,

@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import { ArtistEntity } from 'src/artist/entities/artist.entity';
+import { ArtistEntity } from '../../artist/entities/artist.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()

@@ -11,7 +11,7 @@ import {
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
+import { UUIDValidationPipe } from '../common/pipes/uuid-validation.pipe';
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
