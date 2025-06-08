@@ -4,26 +4,44 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Docker - [Download & Install Docker](https://www.docker.com/get-started).
 
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/Nikitatopodin/nodejs2025Q2-service
 ```
 
 ## Installing NPM modules
 
 ```
-npm install
+npm install --legacy-peer-deps
 ```
 
 ## Running application
 
-Please, create .env file with PORT (check .env.example file) before start.
+Please, create .env file with all necessary variables (check .env.example file) before start.
+
+
+You can either:
+
+```
+npx typeorm-ts-node-commonjs migration:run -d src/data-source.ts
+```
+and 
 
 ```
 npm start
 ```
+or :
+
+```
+docker compose up
+```
+
+If you run docker version migration will apply automatically.
+Changes to ```src``` folder will restart container (hot reload).
+You can check it by ```docker logs library_app -f``` and save anything inside ```src``` folder.
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
@@ -66,9 +84,3 @@ npm run lint
 ```
 npm run format
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
