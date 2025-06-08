@@ -84,3 +84,21 @@ npm run lint
 ```
 npm run format
 ```
+
+### Vulnerabilities scanning
+
+For Vulnerabilities scanning I implement snyk. You have to authorize to scan:
+
+```
+docker login
+```
+
+```
+snyk auth
+```
+
+```
+npm run scan:docker
+```
+
+Might be prohibited in some countries (VPN can help)
