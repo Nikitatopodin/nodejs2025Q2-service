@@ -1,2 +1,10 @@
 node_modules
+dist
 .git
+Dockerfile.app
+Dockerfile.db
+docker-compose.yaml
+*.log
+coverage
+.env
+*.md
