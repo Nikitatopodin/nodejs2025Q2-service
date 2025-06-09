@@ -19,6 +19,8 @@ npm install
 
 ## Running application
 
+Please, create .env file with PORT (check .env.example file) before start.
+
 ```
 npm start
 ```
