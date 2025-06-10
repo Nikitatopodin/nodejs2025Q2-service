@@ -39,14 +39,14 @@ export class AuthService {
     );
   }
 
-  private generateAccessToken(payload: { id: string; login: string }) {
+  private generateAccessToken(payload: { userId: string; login: string }) {
     return this.jwtService.sign(payload, {
       secret: this.JWT_SECRET_KEY,
       expiresIn: this.TOKEN_EXPIRE_TIME,
     });
   }
 
-  private generateRefreshToken(payload: { id: string; login: string }) {
+  private generateRefreshToken(payload: { userId: string; login: string }) {
     return this.jwtService.sign(payload, {
       secret: this.JWT_SECRET_REFRESH_KEY,
       expiresIn: this.TOKEN_REFRESH_EXPIRE_TIME,
@@ -66,12 +66,13 @@ export class AuthService {
     await this.userRepository.save(newUser);
 
     return {
+      id: newUser.id,
       accessToken: this.generateAccessToken({
-        id: newUser.id,
+        userId: newUser.id,
         login: newUser.login,
       }),
       refreshToken: this.generateRefreshToken({
-        id: newUser.id,
+        userId: newUser.id,
         login: newUser.login,
       }),
     };
@@ -96,12 +97,13 @@ export class AuthService {
     if (!isPasswordValid) throw new ForbiddenException('User not found');
 
     return {
+      id: foundUser.id,
       accessToken: this.generateAccessToken({
-        id: foundUser.id,
+        userId: foundUser.id,
         login: foundUser.login,
       }),
       refreshToken: this.generateRefreshToken({
-        id: foundUser.id,
+        userId: foundUser.id,
         login: foundUser.login,
       }),
     };
@@ -132,12 +134,13 @@ export class AuthService {
         if (!foundUser) throw new ForbiddenException();
 
         return {
+          id: foundUser.id,
           accessToken: this.generateAccessToken({
-            id: foundUser.id,
+            userId: foundUser.id,
             login: foundUser.login,
           }),
           refreshToken: this.generateRefreshToken({
-            id: foundUser.id,
+            userId: foundUser.id,
             login: foundUser.login,
           }),
         };

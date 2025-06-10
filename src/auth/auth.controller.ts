@@ -19,7 +19,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'User created' })
   @ApiBadRequestResponse({ description: 'Missing required fields' })
   async signup(@Body() createUserDto: CreateUserDto) {
-    const newUserTokens = this.authService.signup(createUserDto);
+    const newUserTokens = await this.authService.signup(createUserDto);
 
     return newUserTokens;
   }
@@ -30,7 +30,7 @@ export class AuthController {
   @ApiForbiddenResponse({ description: 'User not found' })
   @HttpCode(200)
   async login(@Body() loginRequestDto: CreateUserDto) {
-    const newUserTokens = this.authService.login(loginRequestDto);
+    const newUserTokens = await this.authService.login(loginRequestDto);
 
     return newUserTokens;
   }
@@ -45,6 +45,6 @@ export class AuthController {
   @ApiForbiddenResponse({ description: 'Refresh token is invalid or expired' })
   @HttpCode(200)
   async refresh(@Body() refreshTokenDto: RefreshTokenDto) {
-    return this.authService.refresh(refreshTokenDto);
+    return await this.authService.refresh(refreshTokenDto);
   }
 }
