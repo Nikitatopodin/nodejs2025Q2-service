@@ -2,9 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { CustomLoggerService } from './common/services/logger.service';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
+  const configService = app.get(ConfigService);
 
   const config = new DocumentBuilder()
     .setTitle('My API')
@@ -19,6 +25,14 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
     }),
+  );
+
+  app.useLogger(
+    new CustomLoggerService(
+      configService.getOrThrow('LOGS_ROTATION_NUM'),
+      configService.getOrThrow('LOGS_LEVEL_NUM'),
+      configService.getOrThrow('LOGS_FILE_SIZE'),
+    ),
   );
 
   await app.listen(process.env.PORT || 4000);
