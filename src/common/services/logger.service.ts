@@ -2,6 +2,7 @@ import { ConsoleLogger, LoggerService, LogLevel } from '@nestjs/common';
 import * as fs from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { dirname, join } from 'path';
+import 'dotenv/config';
 
 export class CustomLoggerService implements LoggerService {
   private logFile = join(__dirname, '../../../logs/app0.log');
@@ -20,10 +21,10 @@ export class CustomLoggerService implements LoggerService {
   };
   private currentLogLevel: number;
 
-  constructor(rotationNum: string, logLevel: string, logMaxSize: string) {
-    this.rotationNum = +rotationNum;
-    this.currentLogLevel = +logLevel;
-    this.logMaxSize = +logMaxSize;
+  constructor() {
+    this.rotationNum = +process.env.LOGS_ROTATION_NUM;
+    this.currentLogLevel = +process.env.LOGS_LEVEL_NUM;
+    this.logMaxSize = +process.env.LOGS_FILE_SIZE;
 
     this.addProcessListeners();
   }
