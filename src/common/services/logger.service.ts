@@ -24,6 +24,8 @@ export class CustomLoggerService implements LoggerService {
     this.rotationNum = +rotationNum;
     this.currentLogLevel = +logLevel;
     this.logMaxSize = +logMaxSize;
+
+    this.addProcessListeners();
   }
 
   log(message, context: string) {
@@ -97,5 +99,25 @@ export class CustomLoggerService implements LoggerService {
         fs.appendFileSync(this.errorLogFile, log);
       }
     }
+  }
+
+  private addProcessListeners() {
+    process.on('uncaughtException', (error) => {
+      this.error(
+        `[Uncaught Exception]: ${error.message}`,
+        error.stack,
+        'Process',
+      );
+      process.exit(1);
+    });
+
+    process.on('unhandledRejection', (reason: any) => {
+      this.error(
+        `[Unhandled Rejection]: ${reason.message}`,
+        reason.stack,
+        'Process',
+      );
+      process.exit(1);
+    });
   }
 }
