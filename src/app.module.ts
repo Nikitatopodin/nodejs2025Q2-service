@@ -9,6 +9,9 @@ import { ArtistModule } from './artist/artist.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RequestInterceptor } from './common/interceptors/request.interceptor';
+import { CustomLoggerService } from './common/services/logger.service';
 
 @Module({
   imports: [
@@ -37,6 +40,10 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    CustomLoggerService,
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: RequestInterceptor },
+  ],
 })
 export class AppModule {}
