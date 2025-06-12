@@ -9,9 +9,10 @@ import { ArtistModule } from './artist/artist.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { RequestInterceptor } from './common/interceptors/request.interceptor';
 import { CustomLoggerService } from './common/services/logger.service';
+import { CustomExceptionFilter } from './common/filters/exception.filter';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { CustomLoggerService } from './common/services/logger.service';
     CustomLoggerService,
     AppService,
     { provide: APP_INTERCEPTOR, useClass: RequestInterceptor },
+    { provide: APP_FILTER, useClass: CustomExceptionFilter },
   ],
 })
 export class AppModule {}
