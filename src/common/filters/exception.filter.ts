@@ -33,7 +33,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
     };
 
     this.loggerService.error(
-      `Exception: ${responseBody}`,
+      `Exception: ${JSON.stringify(responseBody)}`,
       exception instanceof Error ? exception.stack : undefined,
       `${request.method} ${request.url}`,
     );
