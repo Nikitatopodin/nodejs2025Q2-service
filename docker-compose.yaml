@@ -1,0 +1,68 @@
+services:
+  postgres:
+    container_name: postgresDB
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
+    command:
+      - "postgres"
+      - "-c"
+      - "logging_collector=on"
+      - "-c"
+      - "log_directory=/var/log/postgresql"
+      - "-c"
+      - "log_filename=postgresql-%Y-%m-%d.log"
+      - "-c"
+      - "log_min_messages=info"
+    networks:
+      - home-library-service
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+      target: dev
+    container_name: library_app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - home-library-service
+    command: ["sh", "-c", "npx typeorm-ts-node-commonjs migration:run -d src/data-source.ts && nodemon --watch src && npm run start:dev"]
+
+volumes:
+  postgres_data:
+  postgres_logs:
+
+networks:
+  home-library-service:
+    driver: bridge

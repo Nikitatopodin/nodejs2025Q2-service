@@ -11,7 +11,7 @@ import {
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { UUIDValidationPipe } from 'src/common/pipes/uuid-validation.pipe';
+import { UUIDValidationPipe } from '../common/pipes/uuid-validation.pipe';
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
