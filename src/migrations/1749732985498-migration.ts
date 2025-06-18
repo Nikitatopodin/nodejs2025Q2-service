@@ -1,9 +1,12 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Migration1749291593553 implements MigrationInterface {
-  name = 'Migration1749291593553';
+export class Migration1749732985498 implements MigrationInterface {
+  name = 'Migration1749732985498';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `CREATE TABLE "user_entity" ("id" character varying NOT NULL, "login" character varying NOT NULL, "version" integer NOT NULL, "createdAt" integer NOT NULL, "updatedAt" integer NOT NULL, "password" character varying NOT NULL, CONSTRAINT "PK_b54f8ea623b17094db7667d8206" PRIMARY KEY ("id"))`,
+    );
     await queryRunner.query(
       `CREATE TABLE "artist_entity" ("id" character varying NOT NULL, "name" character varying NOT NULL, "grammy" boolean NOT NULL, CONSTRAINT "PK_c6ec16b57b60c8096406808021d" PRIMARY KEY ("id"))`,
     );
@@ -12,9 +15,6 @@ export class Migration1749291593553 implements MigrationInterface {
     );
     await queryRunner.query(
       `CREATE TABLE "track_entity" ("id" character varying NOT NULL, "name" character varying NOT NULL, "artistId" character varying, "albumId" character varying, "duration" integer NOT NULL, CONSTRAINT "PK_9cc0e8a743e689434dac0130098" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
-      `CREATE TABLE "user_entity" ("id" character varying NOT NULL, "login" character varying NOT NULL, "version" integer NOT NULL, "createdAt" integer NOT NULL, "updatedAt" integer NOT NULL, "password" character varying NOT NULL, CONSTRAINT "PK_b54f8ea623b17094db7667d8206" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "favorite_entity" ("id" character varying NOT NULL, "trackId" character varying, "artistId" character varying, "albumId" character varying, CONSTRAINT "PK_05ae9b9abba1cbe21e1cfc879f7" PRIMARY KEY ("id"))`,
@@ -59,9 +59,9 @@ export class Migration1749291593553 implements MigrationInterface {
       `ALTER TABLE "album_entity" DROP CONSTRAINT "FK_4aea5943406bd89eced202b012b"`,
     );
     await queryRunner.query(`DROP TABLE "favorite_entity"`);
-    await queryRunner.query(`DROP TABLE "user_entity"`);
     await queryRunner.query(`DROP TABLE "track_entity"`);
     await queryRunner.query(`DROP TABLE "album_entity"`);
     await queryRunner.query(`DROP TABLE "artist_entity"`);
+    await queryRunner.query(`DROP TABLE "user_entity"`);
   }
 }

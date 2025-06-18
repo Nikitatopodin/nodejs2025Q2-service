@@ -9,6 +9,7 @@ import { FavoriteEntity } from './entities/favorite.entity';
 import { TrackService } from '../track/track.service';
 import { AlbumService } from '../album/album.service';
 import { ArtistService } from '../artist/artist.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -20,6 +21,12 @@ import { ArtistService } from '../artist/artist.service';
     ]),
   ],
   controllers: [FavoritesController],
-  providers: [FavoritesService, TrackService, AlbumService, ArtistService],
+  providers: [
+    FavoritesService,
+    TrackService,
+    AlbumService,
+    ArtistService,
+    JwtService,
+  ],
 })
 export class FavoritesModule {}
